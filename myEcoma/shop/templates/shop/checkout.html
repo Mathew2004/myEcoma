@@ -1,0 +1,262 @@
+{% extends 'shop/navbar.html' %}
+
+{% block title %} CheckOut {% endblock %}
+
+{% block body %}
+
+<div class="container">
+  <main>
+    <div class="py-5 text-center">
+      <h2>Checkout form</h2>
+      <p class="lead">Below is an example form built entirely with Bootstrap’s form controls. Each required form group has a validation state that can be triggered by attempting to submit the form without completing it.</p>
+    </div>
+
+    <div class="row g-5">
+      <div class="col-md-5 col-lg-4 order-md-last">
+        <h4 class="d-flex justify-content-between align-items-center mb-3">
+          <span class="text-primary">Your cart</span>
+          <span class="badge bg-primary rounded-pill" id="totalQty">0</span>
+        </h4>
+        <ul class="list-group mb-3" id="items">
+          
+          
+        </ul>
+        <ul class="list-group mb-3">
+         
+          <div id="totalPrice">
+
+          </div>
+        </ul>
+        <div id="status">
+          
+        </div>
+      
+        
+
+      <form class="card p-2" >
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Promo code">
+            <button type="submit" class="btn btn-secondary">Redeem</button>
+          </div>
+        </form>
+      </div>
+
+
+      <div class="col-md-7 col-lg-8" >  
+        <h4 class="mb-3">Billing address</h4>
+        <form class="needs-validation " action="/shop/checkout/" method="post" >  {% csrf_token %}
+          <div class="row g-3">
+            <div class="col-sm-12 ">
+              <input type="hidden" name="itemJson" id="itemJson">
+
+              <label for="firstName" class="form-label">Name</label>
+              <input type="text" class="form-control" id="firstName" placeholder="John Doe" name="name" required>
+             
+            </div>
+
+            <div class="col-12">
+              <label for="phone" class="form-label">Phone</label>
+              <div class="input-group has-validation">
+                <span class="input-group-text">+88</span>
+                <input type="text" class="form-control" id="phone" name="phone" placeholder="01******" required>
+              <div class="invalid-feedback">
+                  Your Phone Number is required.
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" name="email" placeholder="you@example.com" required>
+              <div class="invalid-feedback">
+                Please enter a valid email address for shipping updates.
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label for="address1" class="form-label">Address</label>
+              <input type="text" class="form-control" id="address1" name="address1"  placeholder="1234 Main St" required>
+              <div class="invalid-feedback">
+                Please enter your shipping address.
+              </div>
+            </div>
+
+            <div class="col-8">
+              <label for="address2" class="form-label">Address 2 <span class="text-body-secondary">(Optional)</span></label>
+              <input type="text" class="form-control" id="address2" name="address2" placeholder="Apartment or suite">
+            </div>
+
+
+            <div class="col-md-4">
+              <label for="zip" class="form-label" >Zip Code</label>
+              <input type="text" class="form-control" id="zip" name="zip" placeholder="6400" required>
+              <div class="invalid-feedback">
+                Zip code required.
+              </div>
+            </div>
+          </div>
+          <hr class="my-4">
+
+          <div class="col-md-12 my-5">
+          <button class="btn btn-primary" type="submit" id="submit" >Checkout </button>
+          </div>
+          <div id="checkout-alert"></div>
+
+<!-----
+          <h4 class="mb-3">Payment</h4>
+
+          <div class="my-3">
+            <div class="form-check">
+              <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked required>
+              <label class="form-check-label" for="credit">Credit card</label>
+            </div>
+            <div class="form-check">
+              <input id="debit" name="paymentMethod" type="radio" class="form-check-input" required>
+              <label class="form-check-label" for="debit">Debit card</label>
+            </div>
+            <div class="form-check">
+              <input id="paypal" name="paymentMethod" type="radio" class="form-check-input" required>
+              <label class="form-check-label" for="paypal">PayPal</label>
+            </div>
+          </div>
+
+          <div class="row gy-3">
+            <div class="col-md-6">
+              <label for="cc-name" class="form-label">Name on card</label>
+              <input type="text" class="form-control" id="cc-name" placeholder="" required>
+              <small class="text-body-secondary">Full name as displayed on card</small>
+              <div class="invalid-feedback">
+                Name on card is required
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label for="cc-number" class="form-label">Credit card number</label>
+              <input type="text" class="form-control" id="cc-number" placeholder="" required>
+              <div class="invalid-feedback">
+                Credit card number is required
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <label for="cc-expiration" class="form-label">Expiration</label>
+              <input type="text" class="form-control" id="cc-expiration" placeholder="" required>
+              <div class="invalid-feedback">
+                Expiration date required
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <label for="cc-cvv" class="form-label">CVV</label>
+              <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
+              <div class="invalid-feedback">
+                Security code required
+              </div>
+            </div>
+          </div>
+          --->
+
+          
+        </form>
+      </div>
+    </div>
+  </main>
+
+{% endblock %}
+
+
+{% block js %}
+<script>
+
+cart= JSON.parse(localStorage.getItem('cart'));
+console.log(cart)
+
+tableCart(cart);
+function tableCart(cart) {
+  sum = 0;
+  totalPrice = 0;
+  if ($.isEmptyObject(cart)) {
+    //if object is empty
+    mystr = `<p>Your cart is empty, please add some items to your cart before checking out!</p>`
+    $('#items').append(mystr);
+    document.getElementById('status').innerHTML = `<a href="/shop/"><button class="btn btn-success my-3" >Add Cart</button> </a>`;
+    const att = document.createAttribute("disabled");
+    document.getElementById("submit").setAttributeNode(att);
+
+    //checkout-alert
+    document.getElementById("checkout-alert").innerHTML = `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>No Item's on Card!</strong> Please Add items on your cart.
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>`
+  }
+  else{
+
+    for (var item in cart) {
+      sum += cart[item][0];
+      let name = cart[item][1];
+      let qty = cart[item][0];
+      let itemPrice = cart[item][2];
+      totalPrice = totalPrice + qty*itemPrice;
+      console.log(totalPrice)
+
+      my_list= ` <li class="list-group-item d-flex justify-content-between lh-sm">
+            <div>
+              <h6 class="my-0">${name} <span class="text-danger">(${qty})</span> </h6>
+              <small class="text-body-secondary">Brief description</small>
+            </div>
+            <span class="text-success"> <strong>BDT.</strong> ${itemPrice}</span>
+          </li>`
+      $("#items").append(my_list);
+      document.getElementById('totalPrice').innerHTML= ` <li class="list-group-item d-flex justify-content-between border-danger ">
+            <span>Total (item)</span>
+            <strong >${totalPrice}</strong>
+          </li>`;
+    }
+  }
+   
+    document.getElementById('totalQty').innerHTML=sum;
+    document.getElementById("cart").innerHTML = sum;
+  }
+
+
+ //Clear cart
+ len = Object.keys(cart).length;
+    if(len == '0'){
+      document.getElementById('status').innerHTML = `<button class="btn btn-success" >Add Cart</button>`
+    }else{
+      document.getElementById('status').innerHTML = `<button class="btn btn-danger" id="clear" onclick="clearCart()">Clear Cart</button>`
+    }
+
+ function clearCart() {
+    cart = JSON.parse(localStorage.getItem('cart'));
+    document.getElementById('status').innerHTML = `<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <strong>Holy guacamole!</strong> Your Cart Has been Cleared! Add to Cart.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                          </div>`
+     document.getElementById('totalQty').innerHTML=0;
+     
+    
+    localStorage.clear();
+    cart = {};
+    updateCart(cart);
+}
+ 
+$("#itemJson").val(JSON.stringify(cart));
+
+
+ {% if thank %}
+    alert("Thanks for ordering with us. Your order id is {{id}}. Use it to track your order using our order tracker")
+    localStorage.clear();
+    document.location="/shop/";
+
+  {%endif%}
+
+
+
+
+
+
+
+</script>
+
+{%endblock%}

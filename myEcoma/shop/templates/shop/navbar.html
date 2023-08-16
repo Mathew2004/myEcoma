@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> {% block title %} {% endblock %} </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <style>
+    {% block css %} {% endblock %}
+  </style>
+
+  </head>
+  <body>
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark sticky-top" data-bs-theme="dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">MyEcoma</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarScroll">
+      <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/shop/about">About US</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/shop/contact">Contact US</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/shop/checkout">Checkout</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/shop/products">Products</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/blogs/">Blog</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link " href="/shop/tracker" aria-disabled="true">Tracker</a>
+        </li>
+      </ul>
+      <form class="d-flex" role="search" action="/shop/search/" method="get">
+        <input class="form-control me-2" name="search" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+<!----
+      <button type="button" id = "popcart"class="btn btn-secondary mx-2" data-bs-toggle="popover" data-bs-title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?">
+        <i class="fa-solid fa-cart-shopping"></i> 
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart" id="cart-value">
+          0
+          <span class="visually-hidden">unread messages</span>
+        </span>
+       </button> -->
+
+
+      <a href="/shop/cart/" class="btn btn-warning position-relative mx-2" id="popcart"  data-bs-toggle="popover" data-bs-title="Cart Items" data-bs-content="And here's some amazing content. It's very engaging. Right?">
+        <i class="fa-solid fa-cart-shopping"></i> 
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart" id="cart">
+          0
+          <span class="visually-hidden">unread messages</span>
+        </span>
+      </a>
+     
+      
+    </div>
+  </div>
+</nav>
+
+
+{% block body %} {% endblock %}
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js" integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa" crossorigin="anonymous"></script>
+
+
+{% block js %} 
+
+<script>
+  cart= JSON.parse(localStorage.getItem('cart'));
+  sum = 0;
+  for(item in cart){
+    sum += cart[item][0];
+    console.log(sum);
+  }
+  document.getElementById("cart").innerHTML= sum;
+
+</script>
+{% endblock %}
+
+
+  </body>

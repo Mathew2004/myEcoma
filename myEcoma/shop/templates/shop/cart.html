@@ -1,0 +1,112 @@
+{% extends 'shop/navbar.html' %}
+
+{% block title %} My Cart{% endblock %}
+
+{% block body %}
+<!-----
+<ul class="list-group container my-5" id="items">
+
+  
+  
+
+</ul>
+
+<div class="col-md-12 container">
+
+    <div class="alert alert-success" role="alert">
+         <h3> Total item's on Cart - <strong id="value">0</strong></h3>
+    </div>
+    <div class="alert alert-secondary" role="alert">
+      <h3> Total Price BDT. <strong id="value">0</strong></h3>
+ </div>
+    <a href="/shop/checkout/" class="btn btn-primary ">Checkout</a>
+
+</div>
+--->
+      <div class="col-md-12 col-lg-4 my-4 order-md-last container">
+        <h4 class="d-flex justify-content-between align-items-center mb-3">
+          <span class="text-primary">Your cart</span>
+          <span class="badge bg-primary rounded-pill" id="totalQty">0</span>
+        </h4>
+        <ul class="list-group mb-3" id="items">
+          
+          
+        </ul>
+        <ul class="list-group mb-3">
+        
+          <div id="totalPrice">
+
+          </div>
+        </ul>
+        
+      </div>
+
+
+{% endblock %}
+
+{% block js %}
+<script>
+
+cart= JSON.parse(localStorage.getItem('cart'));
+console.log(cart)
+
+/**
+tableCart(cart);
+function tableCart(cart) {
+    //console.log('We are inside updatePopover');
+    var popStr = "";
+    //popStr = popStr + "<h5> Cart for your items in my shopping cart </h5><div class='mx-2 my-2'>";
+    var i = 1;
+    sum = 0;
+    for (var item in cart) {
+      sum += cart[item][0];
+      let name = cart[item][1];
+      let qty = cart[item][0];
+
+      my_list= `<li class="list-group-item d-flex justify-content-between align-items-center" >
+                ${name}
+                <span class="badge bg-primary rounded-pill" >${qty}</span>
+              </li>`
+
+      $("#items").append(my_list);
+      
+    }
+    document.getElementById("totalQty").innerHTML = sum;
+    document.getElementById("cart").innerHTML = sum;
+
+**/
+sum = 0;
+totalPrice = 0;
+for (var item in cart) {
+      sum += cart[item][0];
+      let name = cart[item][1];
+      let qty = cart[item][0];
+      let itemPrice = cart[item][2];
+      totalPrice = totalPrice + qty*itemPrice;
+      a = item.slice(2,);
+
+      my_list= ` <li class="list-group-item d-flex justify-content-between lh-sm">
+            <div>
+              <h6 class="my-0">${name} <span class="text-danger">(${qty})</span> </h6>
+              <a href="/shop/products/${a}" id='pv${a}' class="btn btn-sm btn-outline-secondary my-2">View</a>
+            </div>
+            <span class="text-success"> <strong>BDT.</strong> ${itemPrice} x <b class="text-danger"> ${qty} </b>  </span>
+          </li>`
+      $("#items").append(my_list);
+      document.getElementById('totalPrice').innerHTML= ` <li class="list-group-item d-flex justify-content-between border-danger ">
+            <span>Total (BDT)</span>
+            <strong >${totalPrice}</strong>
+          </li> <a href="/shop/checkout/" class="btn btn-warning my-3">Checkout</a>`;
+    }
+    document.getElementById("totalQty").innerHTML = sum;
+    document.getElementById("cart").innerHTML = sum;
+    
+
+  
+  
+
+// popStr = popStr + document.getElementById('name' + item).innerHTML.slice(0, 19) + "... Qty: " + cart[item] + '<br>';
+
+</script>
+{% endblock %}
+

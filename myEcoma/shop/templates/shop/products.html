@@ -1,0 +1,59 @@
+{% extends 'shop/navbar.html' %}
+
+{% block title %} Products | MyEcoMA {% endblock %}
+
+{% block body %}
+
+{% load static %}
+<main>
+
+  <section class="py-5 text-center container">
+    <div class="row py-lg-5">
+      <div class="col-lg-6 col-md-8 mx-auto">
+        <h1 class="fw-light">Products example</h1>
+        <p class="lead text-body-secondary">
+          At MyEcoma, we are on a mission to inspire, empower, and facilitate the transition towards sustainable living, one conscious choice at a time.
+          Our platform serves as a guiding beacon for individuals, families, and communities seeking to make a positive impact on the environment and create a harmonious balance between modern lifestyles and the planet we call home.
+        </p>
+        <p>
+          <a href="#prods" class="btn btn-primary my-2">Explore</a>
+          <a href="/shop/about/" class="btn btn-secondary my-2">About Us</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="album py-5 bg-body-tertiary">
+    <div class="container">
+
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+          {% for i in product|slice:"0:"%}
+          <div class="col" id="prods">
+              <div class="card shadow-sm">
+                <img src="/media//{{i.image}}" height="260px"/>
+                <div class="card-body">
+                  <h4>{{i.product_name}}</h4>
+
+                  <p class="card-text">{{ i.desc|slice:"0:54" }}</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <a href="/shop/products/{{i.id}}" id="pv{{i.id}}" class="btn btn-sm btn-outline-secondary">View</a>
+                      <button id="prod{{i.id}}" class="btn btn-sm btn-outline-secondary"><i class="fa fa-cart-shopping"></i></button>
+                    </div>
+                    <small class="text-body-secondary">9 mins</small>
+                  </div>
+                </div>
+              </div>
+
+          </div>
+          {%endfor%}
+    </div>
+  </div>
+
+</main>
+
+
+
+
+
+{% endblock %}
